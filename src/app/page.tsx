@@ -1,6 +1,4 @@
-'use client';
 
-import { useState, useEffect } from 'react';
 import CharacterList from '../components/CharacterList';
 
 interface Character {
@@ -11,29 +9,24 @@ interface Character {
   image: string;
 }
 
-export default function Home() {
-  const [characters, setCharacters] = useState<Character[]>([]);
+export default async function Home() {
+  const characters:Character[] = [];
 
-  useEffect(() => {
-    // API'den karakterleri çekiyoruz
-    const fetchCharacters = async () => {
       try {
         const res = await fetch('https://rickandmortyapi.com/api/character');
         if (!res.ok) {
           throw new Error('Failed to fetch characters');
         }
         const data = await res.json();
-        setCharacters(data.results);
+        console.log(data.results);
+        characters.push(...data.results);
       } catch (error) {
         console.error('Error fetching characters:', error);
       }
-    };
-
-    fetchCharacters();
-  }, []);
+    
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
+    characters.length>0 && <div className="bg-gray-50 min-h-screen flex flex-col">
       {/* Navbar */}
       <header className="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-4 shadow-md sticky top-0 z-10">
         <div className="container mx-auto flex justify-between items-center px-6">
